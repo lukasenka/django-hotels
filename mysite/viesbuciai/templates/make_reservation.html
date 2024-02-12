@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<h1>Viešbučiai</h1>
+<p>Sveiki atvykę į viešbučių nuomą !</p>
+<h1>{{ hotel.name }}</h1>
+<p>Addresas: {{ hotel.address }}</p>
+<p>Kaina: {{ hotel.price }} € / parai</p>
+<p>Jūsų balancas: {{ balance }} €</p>
+
+<hr>
+<h2>Rezervuoti</h2>
+<form method="post" action="{% url 'create_order' hotel.id %}">
+    {% csrf_token %}
+    {{ form | crispy }}
+    <input class="btn btn-success" type="submit" value="Rezervuoti">
+</form>
+
+
+
+{% endblock %}

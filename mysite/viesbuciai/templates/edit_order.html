@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+{% load crispy_forms_tags %}
+{% if user.username == 'admin' %}
+<form method="post">
+    {% csrf_token %}
+    {{ form | crispy }}
+    {{ admin_details_form | crispy }}
+    <input class="btn btn-success" type="submit" value="Save">
+</form>
+{% else %}
+<h3>Neturite reikiamų teisių</h3>
+{% endif %}
+{% endblock %}

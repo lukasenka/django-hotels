@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% if user.username == 'admin' %}
+<form method="post">
+    {% csrf_token %}
+    <p>Ar tikrai norite ištrinti šį viešbutį ?</p>
+    <button type="submit">Patvirtinti</button>
+</form>
+{% else %}
+<h3>Prieiga nesuteikta</h3>
+{% endif %}
+{% endblock %}

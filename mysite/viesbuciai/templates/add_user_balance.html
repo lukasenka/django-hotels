@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+{% if user.username == 'admin' %}
+<form method="post">
+    {% csrf_token %}
+    <label for="amount">Suma:</label>
+    <input type="text" id="amount" name="amount" required>
+    <p></p>
+    <input class="btn btn-success" type="submit" value="Pridėti Balancą">
+</form>
+{% else %}
+<h3>Neturite reikiamų teisių.</h3>
+{% endif %}
+{% endblock %}

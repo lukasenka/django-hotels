@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>Viešbučiai</h1>
+<p>Sveiki atvyke į viešbučių nuomą !</p>
+<p>Sveiki, {{ user }}</p>
+<p>Jūsų balancas {{ balance }} €</p>
+{% if hotels_ > 1 %}
+{% for hotel in hotels_ %}
+<ul>
+<li>Viešbutis : {{hotel.name}}</li>
+<li>Tipas : {{hotel.get_type_display}}</li>
+<li>Adresas : {{hotel.address}}</li>
+<li>Aprašymas : {{hotel.description}}</li>
+<li>Reitingas : {{hotel.get_stars_display}}</li>
+<li>Kaina : {{hotel.price}} € / nakciai</li>
+<li>Laisvų: {{hotel.availability}}</li>
+</ul>
+<hr/>
+<hr/>
+{% endfor %}
+{% else %}
+{% if hotels_ %}
+{% for hotel in hotels_ %}
+
+<ul>
+<li>Viešbutis : {{hotel.name}}</li>
+<li>Tipas : {{hotel.get_type_display}}</li>
+<li>Adresas : {{hotel.address}}</li>
+<li>Aprašymas : {{hotel.description}}</li>
+<li>Max žmonių kiekis: {{hotel.quantity}}</li>
+<li>Reitingas : {{hotel.get_stars_display}}</li>
+<li>Kaina : {{hotel.price}} € / nakciai</li>
+<li>Laisvų: {{hotel.availability}}</li>
+</ul>
+{% endfor %}
+{% endif %}
+{% endif %}
+<div class="container puslapiai"><nav aria-label="...">
+        {% if hotels_.has_other_pages %}
+            <ul class="pagination pagination-sm justify-content-end">
+                {% for i in hotels_.paginator.page_range %}
+                    {% if hotels_.number == i %}
+                        <li class="page-item active"><a class="page-link">{{ i }}</a></li>
+                    {% else %}
+                        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </nav></div>
+
+{% if hotels %}
+<form method="post" action="{% url 'reservation' %}">
+    {% csrf_token %}
+    <label for="hotel">Pasirinkite viešbutį:</label>
+    <select name="hotel" id="hotel">
+        {% for hotel in hotels %}
+        {% if hotel.availability > 0 %}
+        {% if hotel.price <= balance %}
+            <option value="{{ hotel.id }}">{{ hotel.name }}</option>
+        {% endif %}
+        {% endif %}
+        {% endfor %}
+    </select>
+    <p></p>
+    <input class="btn btn-success" type="submit" value="Užsakyti">
+</form>
+{% else %}
+<p>Negalite rezervuoti viešbučio dėl nepakankamo balanco.</p>
+{% endif %}
+{% endblock %}

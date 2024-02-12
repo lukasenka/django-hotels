@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block content %}
+  <h2>Hotel Filter</h2>
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Pavadinimas</th>
+      <th>Tipas</th>
+      <th>Kaina (parai)</th>
+      <th>Žvaigždės</th>
+      <th>Aprašymas</th>
+      <th>Adresas</th>
+      <th>Max žmonių kiekis</th>
+      <th>Turime</th>
+      <th>Užsakyti</th>
+      {% if user.username == 'admin' %}
+      <th>Istrinti</th>
+      {% endif %}
+    </tr>
+  </thead>
+  <tbody>
+    {% for hotel in hotels %}
+    <tr>
+      <td>{{ hotel.name }}</td>
+      <td>{{ hotel.get_type_display }}</td>
+      <td>{{ hotel.price }} €</td>
+      <td>{{ hotel.get_stars_display }}</td>
+      <td>{{ hotel.description }}</td>
+      <td>{{ hotel.address }}</td>
+      <td>{{ hotel.quantity }}</td>
+      <td>{{ hotel.availability }}</td>
+
+      {% if hotel.availability > 0 %}
+      {% if hotel.price <= balance %}
+      <form method="post" action="{% url 'reservation' %}">
+        {% csrf_token %}
+        <input type="hidden" name="hotel" id="hotel" value="{{ hotel.id }}">
+        <td><input class="btn btn-success" type="submit" value="Uzsakyti"></td>
+      </form>
+      {% else %}
+      <td>Trūksta balanco. Kaina: {{ hotel.price }} € / parai. (Balancas: {{ balance }} €)</td>
+      {% endif %}
+      {% else %}
+      <td>Šiuo metu nėra laisvų vietų.</td>
+      {% endif %}
+
+      {% if user.username == 'admin' %}
+      <td><a class="btn btn-danger" href="{% url 'delete_hotel' hotel.pk %}">Ištrinti</a></td>
+      {% endif %}
+
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

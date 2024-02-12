@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Užsakymo patvirtinimas</h2>
+<p>Užsakymo ID: {{ order.id }}</p>
+<p>Viešbutis: {{ order.hotel.name }}</p>
+<p>Įsiregistravimo data: {{ order.r_date }}</p>
+<p>Išsiregistravimo data: {{ order.i_date }}</p>
+<p>Kambario tipas: {{ order.hotel.get_type_display }}</p>
+<p>Dėkojame už užsakymą ! Linkime geros dienos.</p>
+{% endblock %}

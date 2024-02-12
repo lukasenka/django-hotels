@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Visi Vartotojai</h1>
+
+{% if user.username == 'admin' %}
+    <table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Slapyvardis</th>
+      <th>Vardas</th>
+      <th>Pavardė</th>
+      <th>Gimimo Data</th>
+      <th>Adresas</th>
+      <th>Miestas</th>
+      <th>Šalis</th>
+      <th>Balancas</th>
+      <th>Pridėti balancą</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for user in users %}
+      <tr>
+        <td>{{ user.user.username }}</td>
+        <td>{{ user.profile.name }}</td>
+        <td>{{ user.profile.lastname }}</td>
+        <td>{{ user.profile.birth_date }}</td>
+        <td>{{ user.profile.address }}</td>
+        <td>{{ user.profile.city }}</td>
+        <td>{{ user.profile.country }}</td>
+        <td>{{ user.balance }}</td>
+        <td><a href="{% url 'add_balance' user.user.id %}"><button class="btn btn-primary">Redaguoti</button></a></td>
+      </tr>
+   {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<h3>Neturite reikiamų teisių.</h3>
+{% endif %}
+
+{% endblock %}
